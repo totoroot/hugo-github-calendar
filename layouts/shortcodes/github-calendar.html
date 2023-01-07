@@ -1,0 +1,29 @@
+{{ if .IsNamedParams }}
+
+{{ $username := default "totoroot" (.Get "username") }}
+{{ $responsive := default true (.Get "responsive") }}
+{{ $width := default 100 (.Get "width") }}
+{{ $backgroundColor := default "#303030" (.Get "backgroundColor") }}
+{{ $textColor := default "#ececec" (.Get "textColor") }}
+
+<!-- GitHub Calendar (JS/CSS) -->
+
+<link rel="stylesheet" href="{{ .Site.BaseURL }}css/github-calendar.css">
+
+{{ $githubCalendarJS := resources.Get "js/github-calendar.min.js" | minify | fingerprint "md5" }}
+<script src="{{ $githubCalendarJS.Permalink }}"></script>
+
+<div class="calendar" style='width: {{ $width }}%'>
+    Loading GitHub contribution data for user.
+</div>
+
+<script>
+    GitHubCalendar(".calendar", {{ $username }}, { responsive: {{ $responsive }} }, {{ $width }});
+    document.documentElement.style.setProperty('--color-calendar-background', '{{ $backgroundColor }}');
+    document.documentElement.style.setProperty('--color-calendar-text', '{{ $textColor }}');
+</script>
+{{.Inner}}
+
+{{ else }}
+{{ errorf "GitHubCalendar Hugo Shortcode: please provide named Parameters" }}
+{{ end }}
