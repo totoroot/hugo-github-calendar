@@ -1,10 +1,16 @@
 {{ if .IsNamedParams }}
 
+<!-- Arguments -->
 {{ $username := default "totoroot" (.Get "username") }}
-{{ $responsive := default true (.Get "responsive") }}
+<!-- Options -->
 {{ $width := default 100 (.Get "width") }}
 {{ $backgroundColor := default "#303030" (.Get "backgroundColor") }}
 {{ $textColor := default "#ececec" (.Get "textColor") }}
+
+{{ $responsive := default true (.Get "responsive") }}
+{{ $tooltips := default false (.Get "tooltips") }}
+{{ $globalStats := default true (.Get "globalStats") }}
+<!-- {{ $summary_text := default true (.Get "summaryText") }} -->
 
 <!-- GitHub Calendar (JS/CSS) -->
 
@@ -18,7 +24,11 @@
 </div>
 
 <script>
-    GitHubCalendar(".calendar", {{ $username }}, { responsive: {{ $responsive }} }, {{ $width }});
+    GitHubCalendar(".calendar", {{ $username }}, {
+        responsive: {{ $responsive }},
+        tooltips: {{ $tooltips }},
+        global_stats: {{ $globalStats }}
+    });
     document.documentElement.style.setProperty('--color-calendar-background', '{{ $backgroundColor }}');
     document.documentElement.style.setProperty('--color-calendar-text', '{{ $textColor }}');
 </script>
